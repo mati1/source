@@ -1,0 +1,15 @@
+name: Dependency
+
+on:
+  pull_request_target: 
+    types: [opened, edited, closed, reopened]
+    paths: ['source-files/**']
+
+jobs:
+  check_dependencies:
+    runs-on: ubuntu-latest
+    name: Check Dependencies
+    steps:
+    - uses: gregsdennis/dependencies-action@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
