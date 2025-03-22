@@ -1,0 +1,32 @@
+name: Add test.txt to branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      target-branch:
+        description: 'Branch to push test.txt to'
+        required: true
+        default: 'main'
+
+jobs:
+  add-test-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs['target-branch'] }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create test.txt
+        run: echo "This is a test file" > test.txt
+
+      - name: Commit and push test.txt
+        run: |
+          git add test.txt
+          git commit -m "Add test.txt via manual workflow"
+          git push origin ${{ github.event.inputs['target-branch'] }}
